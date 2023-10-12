@@ -5,6 +5,7 @@ namespace timgws;
 use \Carbon\Carbon;
 use \stdClass;
 use \Illuminate\Database\Query\Builder;
+use \Illuminate\Support\Facades\DB;
 use \timgws\QBParseException;
 
 class QueryBuilderParser
@@ -252,6 +253,10 @@ class QueryBuilderParser
             return $this->makeQueryWhenArray($query, $rule, $sqlOperator, $value, $condition);
         } elseif ($this->operatorIsNull($operator)) {
             return $this->makeQueryWhenNull($query, $rule, $sqlOperator, $condition);
+        }
+
+        if (isset($rule->field_type) && $rule->field_type == 'raw'){
+            return $query->where(DB::raw($rule->field), $sqlOperator['operator'], $value, $condition);
         }
 
         return $query->where($rule->field, $sqlOperator['operator'], $value, $condition);
