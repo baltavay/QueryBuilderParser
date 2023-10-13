@@ -255,7 +255,7 @@ class QueryBuilderParser
             return $this->makeQueryWhenNull($query, $rule, $sqlOperator, $condition);
         }
 
-        if (isset($rule->field_type) && $rule->field_type == 'raw'){
+        if (isset($rule->data) && isset($rule->data->field_type) && $rule->data->field_type == 'raw'){
             return $query->where(DB::raw($rule->field), $sqlOperator['operator'], $value, $condition);
         }
 
